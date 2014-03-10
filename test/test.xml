@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cc:System xmlns:cc="http://cloudconductor.org/namespaces/cc">
+  <cc:Name>h</cc:Name>
+  <cc:Description>h</cc:Description>
+  <cc:Author>h</cc:Author>
+  <cc:Date>2014-03-10</cc:Date>
+  <cc:License>h</cc:License>
+  <cc:Infrastructures>
+    <cc:Infrastructure id="new_id">
+      <cc:Name>New Infrastructure</cc:Name>
+    </cc:Infrastructure>
+  </cc:Infrastructures>
+  <cc:Machines>
+    <cc:Machine id="t">
+      <cc:Name>t</cc:Name>
+      <cc:SpecType>small</cc:SpecType>
+      <cc:OSType>t</cc:OSType>
+      <cc:OSVersion>t</cc:OSVersion>
+      <cc:NetworkInterfaces>
+        <cc:NetworkInterface ref="new_network_group_id1" />
+      </cc:NetworkInterfaces>
+      <cc:MachineFilters>
+        <cc:MachineFilter ref="t" />
+      </cc:MachineFilters>
+    </cc:Machine>
+  </cc:Machines>
+  <cc:MachineGroups>
+    <cc:MachineGroup id="t" ref="t">
+      <cc:Name>t</cc:Name>
+      <cc:Infrastructures>
+        <cc:Infrastructure ref="new_id" />
+      </cc:Infrastructures>
+      <cc:Roles>
+        <cc:Role ref="web_role" />
+      </cc:Roles>
+      <cc:NodeType>
+        <cc:Single />
+      </cc:NodeType>
+    </cc:MachineGroup>
+  </cc:MachineGroups>
+  <cc:Middlewares>
+    <cc:Middleware type="chef" id="apache_cookbook">
+      <cc:Name>Apache 2.2</cc:Name>
+      <cc:Repository>http://example.com/apache.git</cc:Repository>
+      <cc:CookbookName>apache</cc:CookbookName>
+    </cc:Middleware>
+  </cc:Middlewares>
+  <cc:Roles>
+    <cc:Role type="chef" id="web_role">
+      <cc:Name>Web Server Role</cc:Name>
+      <cc:Middlewares>
+        <cc:Middleware ref="apache_cookbook" />
+      </cc:Middlewares>
+      <cc:Import type="chef_runlist">chef_runlist_apache.rb</cc:Import>
+      <cc:Import type="chef_attribute">chef_attr_apache.rb</cc:Import>
+      <cc:UserInputKeys>
+        <cc:UserInputKey>apache.modproxy.server</cc:UserInputKey>
+      </cc:UserInputKeys>
+    </cc:Role>
+  </cc:Roles>
+  <cc:MachineFilters>
+    <cc:MachineFilter id="t">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+  </cc:MachineFilters>
+  <cc:Networks>
+    <cc:Network id="new_network_id1">
+      <cc:Name>New Network Name1</cc:Name>
+    </cc:Network>
+  </cc:Networks>
+  <cc:NetworkGroups>
+    <cc:NetworkGroup id="new_network_group_id1">
+      <cc:Name>New Network Group Name1</cc:Name>
+      <cc:Networks>
+        <cc:Network ref="new_network_id1">
+          <cc:Infrastructures>
+            <cc:Infrastructure ref="new_id" />
+          </cc:Infrastructures>
+        </cc:Network>
+      </cc:Networks>
+      <cc:NetworkFilters />
+    </cc:NetworkGroup>
+  </cc:NetworkGroups>
+  <cc:FloatingIPs />
+</cc:System>
