@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <cc:System xmlns:cc="http://cloudconductor.org/namespaces/cc">
-  <cc:Name>akiho-system</cc:Name>
-  <cc:Description>akiho system</cc:Description>
+  <cc:Name>akiho-systems</cc:Name>
+  <cc:Description>akiho systems</cc:Description>
   <cc:Author>akiho</cc:Author>
   <cc:Date>2014-03-10</cc:Date>
   <cc:License>apache</cc:License>
