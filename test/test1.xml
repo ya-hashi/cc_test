@@ -20,8 +20,10 @@
         <cc:NetworkInterface ref="akiho_ng" />
       </cc:NetworkInterfaces>
       <cc:MachineFilters>
-        <cc:MachineFilter ref="in_all" />
-        <cc:MachineFilter ref="out_all" />
+        <cc:MachineFilter ref="in_all_tcp" />
+        <cc:MachineFilter ref="out_all_tcp" />
+        <cc:MachineFilter ref="in_all_udp" />
+        <cc:MachineFilter ref="out_all_udp" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="tomacat_m">
@@ -33,8 +35,10 @@
         <cc:NetworkInterface ref="akiho_ng" />
       </cc:NetworkInterfaces>
       <cc:MachineFilters>
-        <cc:MachineFilter ref="in_all" />
-        <cc:MachineFilter ref="out_all" />
+        <cc:MachineFilter ref="in_all_tcp" />
+        <cc:MachineFilter ref="out_all_tcp" />
+        <cc:MachineFilter ref="in_all_udp" />
+        <cc:MachineFilter ref="out_all_udp" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="postgresql_m">
@@ -46,8 +50,10 @@
         <cc:NetworkInterface ref="akiho_ng" />
       </cc:NetworkInterfaces>
       <cc:MachineFilters>
-        <cc:MachineFilter ref="in_all" />
-        <cc:MachineFilter ref="out_all" />
+        <cc:MachineFilter ref="in_all_tcp" />
+        <cc:MachineFilter ref="out_all_tcp" />
+        <cc:MachineFilter ref="in_all_udp" />
+        <cc:MachineFilter ref="out_all_udp" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="zabbix_m">
@@ -59,8 +65,10 @@
         <cc:NetworkInterface ref="akiho_ng" />
       </cc:NetworkInterfaces>
       <cc:MachineFilters>
-        <cc:MachineFilter ref="in_all" />
-        <cc:MachineFilter ref="out_all" />
+        <cc:MachineFilter ref="in_all_tcp" />
+        <cc:MachineFilter ref="out_all_tcp" />
+        <cc:MachineFilter ref="in_all_udp" />
+        <cc:MachineFilter ref="out_all_udp" />
       </cc:MachineFilters>
     </cc:Machine>
   </cc:Machines>
@@ -220,18 +228,32 @@
     </cc:Role>
   </cc:Roles>
   <cc:MachineFilters>
-    <cc:MachineFilter id="in_all">
-      <cc:Protocol>all</cc:Protocol>
+    <cc:MachineFilter id="in_all_tcp">
+      <cc:Protocol>tcp</cc:Protocol>
       <cc:Port>all</cc:Port>
       <cc:Direction>ingress</cc:Direction>
       <cc:Source>all</cc:Source>
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:MachineFilter>
-    <cc:MachineFilter id="out_all">
-      <cc:Protocol>all</cc:Protocol>
+    <cc:MachineFilter id="out_all_tcp">
+      <cc:Protocol>tcp</cc:Protocol>
       <cc:Port>all</cc:Port>
       <cc:Direction>egress</cc:Direction>
       <cc:Destination>all</cc:Destination>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="in_all_udp">
+      <cc:Protocol>udp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="out_all_udp">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:MachineFilter>
   </cc:MachineFilters>
