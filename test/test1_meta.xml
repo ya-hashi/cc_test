@@ -38,34 +38,34 @@
   <ccm:Links>
     <ccm:Link>
       <ccm:Source ref="apache_m">
-        <ccm:Selector>g:nth-child(1) g:nth-child(2)   </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(2)</ccm:Selector>
       </ccm:Source>
       <ccm:Target ref="akiho">
-        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(1)    </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(1)</ccm:Selector>
       </ccm:Target>
     </ccm:Link>
     <ccm:Link>
       <ccm:Source ref="tomacat_m">
-        <ccm:Selector>g:nth-child(1) g:nth-child(2)   </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(2)</ccm:Selector>
       </ccm:Source>
       <ccm:Target ref="akiho">
-        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(2)    </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(2)</ccm:Selector>
       </ccm:Target>
     </ccm:Link>
     <ccm:Link>
       <ccm:Source ref="postgresql_m">
-        <ccm:Selector>g:nth-child(1) g:nth-child(2)   </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(2)</ccm:Selector>
       </ccm:Source>
       <ccm:Target ref="akiho">
-        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(3)    </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(3)</ccm:Selector>
       </ccm:Target>
     </ccm:Link>
     <ccm:Link>
       <ccm:Source ref="zabbix_m">
-        <ccm:Selector>g:nth-child(1) g:nth-child(2)   </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(2)</ccm:Selector>
       </ccm:Source>
       <ccm:Target ref="akiho">
-        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(4)    </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(4)</ccm:Selector>
       </ccm:Target>
     </ccm:Link>
   </ccm:Links>
