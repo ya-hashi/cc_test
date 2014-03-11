@@ -186,8 +186,8 @@
         <cc:Middleware ref="deploy_cookbook" />
         <cc:Middleware ref="nsupdate_cookbook" />
       </cc:Middlewares>
-      <cc:Import type="chef_runlist">https://raw.github.com/cloudconductor-dev/chef-parameters/master/chef_runlist_apache.json</cc:Import>
-      <cc:Import type="chef_attribute">https://raw.github.com/cloudconductor-dev/chef-parameters/master/chef_attr_apache.json</cc:Import>
+      <cc:Import type="chef_runlist">https://raw.github.com/cloudconductor-dev/chef-parameters/release-0.2.0/chef_runlist_apache.json</cc:Import>
+      <cc:Import type="chef_attribute">https://raw.github.com/cloudconductor-dev/chef-parameters/release-0.2.0/chef_attr_apache.json</cc:Import>
       <cc:UserInputKeys>
         <cc:UserInputKey>apache.contact</cc:UserInputKey>
       </cc:UserInputKeys>
@@ -201,8 +201,8 @@
         <cc:Middleware ref="nsupdate_cookbook" />
         <cc:Middleware ref="application_java" />
       </cc:Middlewares>
-      <cc:Import type="chef_runlist">https://raw.github.com/cloudconductor-dev/chef-parameters/master/chef_runlist_tomcat.json</cc:Import>
-      <cc:Import type="chef_attribute">https://raw.github.com/cloudconductor-dev/chef-parameters/master/chef_attr_tomcat.json</cc:Import>
+      <cc:Import type="chef_runlist">https://raw.github.com/cloudconductor-dev/chef-parameters/release-0.2.0/chef_runlist_tomcat.json</cc:Import>
+      <cc:Import type="chef_attribute">https://raw.github.com/cloudconductor-dev/chef-parameters/release-0.2.0/chef_attr_tomcat.json</cc:Import>
     </cc:Role>
     <cc:Role type="chef" id="db_role">
       <cc:Name>DB Server Role</cc:Name>
@@ -212,8 +212,8 @@
         <cc:Middleware ref="deploy_cookbook" />
         <cc:Middleware ref="nsupdate_cookbook" />
       </cc:Middlewares>
-      <cc:Import type="chef_runlist">https://raw.github.com/cloudconductor-dev/chef-parameters/master/chef_runlist_postgresql.json</cc:Import>
-      <cc:Import type="chef_attribute">https://raw.github.com/cloudconductor-dev/chef-parameters/master/chef_attr_postgresql.json</cc:Import>
+      <cc:Import type="chef_runlist">https://raw.github.com/cloudconductor-dev/chef-parameters/release-0.2.0/chef_runlist_postgresql.json</cc:Import>
+      <cc:Import type="chef_attribute">https://raw.github.com/cloudconductor-dev/chef-parameters/release-0.2.0/chef_attr_postgresql.json</cc:Import>
     </cc:Role>
     <cc:Role type="chef" id="zabbix_dns_role">
       <cc:Name>Monitoring Server Role</cc:Name>
@@ -223,8 +223,8 @@
         <cc:Middleware ref="deploy_cookbook" />
         <cc:Middleware ref="nsupdate_cookbook" />
       </cc:Middlewares>
-      <cc:Import type="chef_runlist">https://raw.github.com/cloudconductor-dev/chef-parameters/master/chef_runlist_zabbix.json</cc:Import>
-      <cc:Import type="chef_attribute">https://raw.github.com/cloudconductor-dev/chef-parameters/master/chef_attr_zabbix.json</cc:Import>
+      <cc:Import type="chef_runlist">https://raw.github.com/cloudconductor-dev/chef-parameters/release-0.2.0/chef_runlist_zabbix.json</cc:Import>
+      <cc:Import type="chef_attribute">https://raw.github.com/cloudconductor-dev/chef-parameters/release-0.2.0/chef_attr_zabbix.json</cc:Import>
     </cc:Role>
   </cc:Roles>
   <cc:MachineFilters>
