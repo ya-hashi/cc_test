@@ -250,7 +250,7 @@
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:MachineFilter>
     <cc:MachineFilter id="out_all_udp">
-      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Protocol>udp</cc:Protocol>
       <cc:Port>all</cc:Port>
       <cc:Direction>ingress</cc:Direction>
       <cc:Source>all</cc:Source>
