@@ -252,8 +252,8 @@
     <cc:MachineFilter id="out_all_udp">
       <cc:Protocol>udp</cc:Protocol>
       <cc:Port>all</cc:Port>
-      <cc:Direction>ingress</cc:Direction>
-      <cc:Source>all</cc:Source>
+      <cc:Direction>egress</cc:Direction>
+      <cc:Destination>all</cc:Destination>
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:MachineFilter>
   </cc:MachineFilters>
