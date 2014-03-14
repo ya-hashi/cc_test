@@ -24,6 +24,8 @@
         <cc:MachineFilter ref="out_all_tcp" />
         <cc:MachineFilter ref="in_all_udp" />
         <cc:MachineFilter ref="out_all_udp" />
+        <cc:MachineFilter ref="in_all_icmp" />
+        <cc:MachineFilter ref="out_all_icmp" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="tomacat_m">
@@ -39,6 +41,8 @@
         <cc:MachineFilter ref="out_all_tcp" />
         <cc:MachineFilter ref="in_all_udp" />
         <cc:MachineFilter ref="out_all_udp" />
+        <cc:MachineFilter ref="in_all_icmp" />
+        <cc:MachineFilter ref="out_all_icmp" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="postgresql_m">
@@ -54,6 +58,8 @@
         <cc:MachineFilter ref="out_all_tcp" />
         <cc:MachineFilter ref="in_all_udp" />
         <cc:MachineFilter ref="out_all_udp" />
+        <cc:MachineFilter ref="in_all_icmp" />
+        <cc:MachineFilter ref="out_all_icmp" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="zabbix_m">
@@ -69,6 +75,8 @@
         <cc:MachineFilter ref="out_all_tcp" />
         <cc:MachineFilter ref="in_all_udp" />
         <cc:MachineFilter ref="out_all_udp" />
+        <cc:MachineFilter ref="in_all_icmp" />
+        <cc:MachineFilter ref="out_all_icmp" />
       </cc:MachineFilters>
     </cc:Machine>
   </cc:Machines>
@@ -256,6 +264,20 @@
       <cc:Destination>all</cc:Destination>
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:MachineFilter>
+    <cc:MachineFilter id="in_all_icmp">
+      <cc:Protocol>icmp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="out_all_icmp">
+      <cc:Protocol>icmp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>egress</cc:Direction>
+      <cc:Destination>all</cc:Destination>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
   </cc:MachineFilters>
   <cc:Networks>
     <cc:Network id="akiho">
@@ -273,21 +295,53 @@
         </cc:Network>
       </cc:Networks>
       <cc:NetworkFilters>
-        <cc:NetworkFilter ref="in_all" />
-        <cc:NetworkFilter ref="out_all" />
+        <cc:NetworkFilter ref="in_all_tcp" />
+        <cc:NetworkFilter ref="out_all_tcp" />
+        <cc:NetworkFilter ref="in_all_udp" />
+        <cc:NetworkFilter ref="out_all_udp" />
+        <cc:NetworkFilter ref="in_all_icmp" />
+        <cc:NetworkFilter ref="out_all_icmp" />
       </cc:NetworkFilters>
     </cc:NetworkGroup>
   </cc:NetworkGroups>
   <cc:NetworkFilters>
-    <cc:NetworkFilter id="in_all">
-      <cc:Protocol>all</cc:Protocol>
+    <cc:NetworkFilter id="in_all_tcp">
+      <cc:Protocol>tcp</cc:Protocol>
       <cc:Port>all</cc:Port>
       <cc:Direction>ingress</cc:Direction>
       <cc:Source>all</cc:Source>
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:NetworkFilter>
-    <cc:NetworkFilter id="out_all">
-      <cc:Protocol>all</cc:Protocol>
+    <cc:NetworkFilter id="out_all_tcp">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>egress</cc:Direction>
+      <cc:Destination>all</cc:Destination>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:NetworkFilter>
+    <cc:NetworkFilter id="in_all_udp">
+      <cc:Protocol>udp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:NetworkFilter>
+    <cc:NetworkFilter id="out_all_udp">
+      <cc:Protocol>udp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>egress</cc:Direction>
+      <cc:Destination>all</cc:Destination>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:NetworkFilter>
+    <cc:NetworkFilter id="in_all_icmp">
+      <cc:Protocol>icmp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:NetworkFilter>
+    <cc:NetworkFilter id="out_all_icmp">
+      <cc:Protocol>icmp</cc:Protocol>
       <cc:Port>all</cc:Port>
       <cc:Direction>egress</cc:Direction>
       <cc:Destination>all</cc:Destination>
