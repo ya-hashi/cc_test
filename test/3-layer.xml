@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <cc:System xmlns:cc="http://cloudconductor.org/namespaces/cc">
-  <cc:Name>3 layer</cc:Name>
-  <cc:Description>3 layer</cc:Description>
+  <cc:Name>3セグメント3層モデル</cc:Name>
+  <cc:Description>3セグメント3層モデル</cc:Description>
   <cc:Author>ken-aio</cc:Author>
   <cc:Date>2014-03-17</cc:Date>
   <cc:License>hoge</cc:License>
