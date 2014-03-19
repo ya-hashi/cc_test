@@ -101,6 +101,10 @@
       <cc:NodeType>
         <cc:Single />
       </cc:NodeType>
+      <cc:Monitorings>
+        <cc:Monitoring ref="linux_os" />
+        <cc:Monitoring ref="conductor_web" />
+      </cc:Monitorings>
     </cc:MachineGroup>
     <cc:MachineGroup id="Zabbix" ref="Zabbix_machine">
       <cc:Name>Zabbix</cc:Name>
@@ -114,6 +118,9 @@
       <cc:NodeType>
         <cc:Single />
       </cc:NodeType>
+      <cc:Monitorings>
+        <cc:Monitoring ref="linux_os" />
+      </cc:Monitorings>
     </cc:MachineGroup>
     <cc:MachineGroup id="tomcat_g" ref="tomcat">
       <cc:Name>tomcat</cc:Name>
@@ -126,6 +133,10 @@
       <cc:NodeType>
         <cc:Single />
       </cc:NodeType>
+      <cc:Monitorings>
+        <cc:Monitoring ref="linux_os" />
+        <cc:Monitoring ref="conductor_ap" />
+      </cc:Monitorings>
     </cc:MachineGroup>
     <cc:MachineGroup id="postgres" ref="postgres">
       <cc:Name>postgres</cc:Name>
@@ -138,6 +149,10 @@
       <cc:NodeType>
         <cc:Single />
       </cc:NodeType>
+      <cc:Monitorings>
+        <cc:Monitoring ref="linux_os" />
+        <cc:Monitoring ref="conductor_db" />
+      </cc:Monitorings>
     </cc:MachineGroup>
   </cc:MachineGroups>
   <cc:Middlewares>
@@ -335,4 +350,22 @@
       <cc:Name>eip_monitor</cc:Name>
     </cc:FloatingIP>
   </cc:FloatingIPs>
+  <cc:Monitorings>
+    <cc:Monitoring id="linux_os">
+      <cc:Name>LinuxOS Monitoring</cc:Name>
+      <cc:Import filetype="zabbix">https://raw.github.com/cloudconductor-dev/zabbix-templates/release-0.2.0/zbx_os.xml</cc:Import>
+    </cc:Monitoring>
+    <cc:Monitoring id="conductor_web">
+      <cc:Name>Web Monitoring</cc:Name>
+      <cc:Import filetype="zabbix">https://raw.github.com/cloudconductor-dev/zabbix-templates/release-0.2.0/zbx_apache.xml</cc:Import>
+    </cc:Monitoring>
+    <cc:Monitoring id="conductor_ap">
+      <cc:Name>AP Monitoring</cc:Name>
+      <cc:Import filetype="zabbix">https://raw.github.com/cloudconductor-dev/zabbix-templates/release-0.2.0/zbx_tomcat.xml</cc:Import>
+    </cc:Monitoring>
+    <cc:Monitoring id="conductor_db">
+      <cc:Name>DB Monitoring</cc:Name>
+      <cc:Import filetype="zabbix">https://raw.github.com/cloudconductor-dev/zabbix-templates/release-0.2.0/zbx_postgresql.xml</cc:Import>
+    </cc:Monitoring>
+  </cc:Monitorings>
 </cc:System>
