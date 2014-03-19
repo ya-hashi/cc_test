@@ -17,23 +17,38 @@
       <cc:OSType>CentOS</cc:OSType>
       <cc:OSVersion>6.5</cc:OSVersion>
       <cc:NetworkInterfaces>
-        <cc:NetworkInterface ref="network_group_1" />
-        <cc:NetworkInterface ref="network_group_2" />
+        <cc:NetworkInterface ref="DMZ_network" />
+        <cc:NetworkInterface ref="PrivateNetwork" />
       </cc:NetworkInterfaces>
       <cc:MachineFilters>
-        <cc:MachineFilter ref="in_all_tcp" />
+        <cc:MachineFilter ref="sec_in_all_deny" />
+        <cc:MachineFilter ref="sec_in_80" />
+        <cc:MachineFilter ref="sec_in_10050" />
+        <cc:MachineFilter ref="sec_in_22_from_dmz" />
+        <cc:MachineFilter ref="sec_out_all_allow" />
+        <cc:MachineFilter ref="sec_in_tcp_53" />
+        <cc:MachineFilter ref="sec_in_udp_53" />
       </cc:MachineFilters>
     </cc:Machine>
-    <cc:Machine id="monitor_1">
-      <cc:Name>Monitor 1</cc:Name>
+    <cc:Machine id="Zabbix_machine">
+      <cc:Name>Zabbix_machine</cc:Name>
       <cc:SpecType>small</cc:SpecType>
       <cc:OSType>CentOS</cc:OSType>
       <cc:OSVersion>6.5</cc:OSVersion>
       <cc:NetworkInterfaces>
-        <cc:NetworkInterface ref="network_group_1" />
+        <cc:NetworkInterface ref="DMZ_network" />
       </cc:NetworkInterfaces>
       <cc:MachineFilters>
-        <cc:MachineFilter ref="in_all_tcp" />
+        <cc:MachineFilter ref="sec_in_all_deny" />
+        <cc:MachineFilter ref="sec_in_80" />
+        <cc:MachineFilter ref="sec_out_all_allow" />
+        <cc:MachineFilter ref="sec_in_10050" />
+        <cc:MachineFilter ref="sec_in_10051_dmz" />
+        <cc:MachineFilter ref="sec_in_10051_private" />
+        <cc:MachineFilter ref="sec_in_22" />
+        <cc:MachineFilter ref="sec_in_22_from_dmz" />
+        <cc:MachineFilter ref="sec_in_tcp_53" />
+        <cc:MachineFilter ref="sec_in_udp_53" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="tomcat">
@@ -42,11 +57,16 @@
       <cc:OSType>CentOS</cc:OSType>
       <cc:OSVersion>6.5</cc:OSVersion>
       <cc:NetworkInterfaces>
-        <cc:NetworkInterface ref="network_group_2" />
-        <cc:NetworkInterface ref="network_group_3" />
+        <cc:NetworkInterface ref="PrivateNetwork" />
       </cc:NetworkInterfaces>
       <cc:MachineFilters>
-        <cc:MachineFilter ref="in_all_tcp" />
+        <cc:MachineFilter ref="sec_in_all_deny" />
+        <cc:MachineFilter ref="sec_in_80" />
+        <cc:MachineFilter ref="sec_in_10050" />
+        <cc:MachineFilter ref="sec_in_22_from_dmz" />
+        <cc:MachineFilter ref="sec_out_all_allow" />
+        <cc:MachineFilter ref="sec_in_tcp_53" />
+        <cc:MachineFilter ref="sec_in_udp_53" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="postgres">
@@ -55,10 +75,16 @@
       <cc:OSType>CentOS</cc:OSType>
       <cc:OSVersion>6.5</cc:OSVersion>
       <cc:NetworkInterfaces>
-        <cc:NetworkInterface ref="network_group_3" />
+        <cc:NetworkInterface ref="PrivateNetwork" />
       </cc:NetworkInterfaces>
       <cc:MachineFilters>
-        <cc:MachineFilter ref="in_all_tcp" />
+        <cc:MachineFilter ref="sec_in_all_deny" />
+        <cc:MachineFilter ref="sec_in_80" />
+        <cc:MachineFilter ref="sec_in_10050" />
+        <cc:MachineFilter ref="sec_in_22_from_dmz" />
+        <cc:MachineFilter ref="sec_out_all_allow" />
+        <cc:MachineFilter ref="sec_in_tcp_53" />
+        <cc:MachineFilter ref="sec_in_udp_53" />
       </cc:MachineFilters>
     </cc:Machine>
   </cc:Machines>
@@ -71,13 +97,13 @@
       <cc:Roles>
         <cc:Role ref="web_role" />
       </cc:Roles>
-      <cc:FloatingIP ref="1" />
+      <cc:FloatingIP ref="web_fip" />
       <cc:NodeType>
         <cc:Single />
       </cc:NodeType>
     </cc:MachineGroup>
-    <cc:MachineGroup id="monitor_group_1" ref="monitor_1">
-      <cc:Name>Monitor Group 1</cc:Name>
+    <cc:MachineGroup id="Zabbix" ref="Zabbix_machine">
+      <cc:Name>Zabbix</cc:Name>
       <cc:Infrastructures>
         <cc:Infrastructure ref="infrastructure_1" />
       </cc:Infrastructures>
@@ -198,30 +224,90 @@
     </cc:Role>
   </cc:Roles>
   <cc:MachineFilters>
-    <cc:MachineFilter id="in_all_tcp">
+    <cc:MachineFilter id="sec_in_all_deny">
       <cc:Protocol>tcp</cc:Protocol>
       <cc:Port>all</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
+      <cc:RuleAction>deny</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_80">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>80</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_10050">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>10050</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source ref="DMZ_network" />
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_22_from_dmz">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>22</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source ref="DMZ_network" />
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_out_all_allow">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>egress</cc:Direction>
+      <cc:Destination>all</cc:Destination>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_tcp_53">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>53</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source ref="DMZ_network" />
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_udp_53">
+      <cc:Protocol>udp</cc:Protocol>
+      <cc:Port>53</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_10051_dmz">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>10051</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source ref="DMZ_network" />
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_10051_private">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>10051</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source ref="PrivateNetwork" />
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_22">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>22</cc:Port>
       <cc:Direction>ingress</cc:Direction>
       <cc:Source>all</cc:Source>
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:MachineFilter>
   </cc:MachineFilters>
   <cc:Networks>
-    <cc:Network id="network_1">
-      <cc:Name>Network 1</cc:Name>
+    <cc:Network id="DMZ">
+      <cc:Name>DMZ</cc:Name>
     </cc:Network>
-    <cc:Network id="network_2">
-      <cc:Name>Network 2</cc:Name>
-    </cc:Network>
-    <cc:Network id="network_3">
-      <cc:Name>Network 3</cc:Name>
+    <cc:Network id="Private">
+      <cc:Name>Private</cc:Name>
     </cc:Network>
   </cc:Networks>
   <cc:NetworkGroups>
-    <cc:NetworkGroup id="network_group_1">
-      <cc:Name>Network Group 1</cc:Name>
+    <cc:NetworkGroup id="DMZ_network">
+      <cc:Name>DMZ_network</cc:Name>
       <cc:Networks>
-        <cc:Network ref="network_1">
+        <cc:Network ref="DMZ">
           <cc:Infrastructures>
             <cc:Infrastructure ref="infrastructure_1" />
           </cc:Infrastructures>
@@ -229,21 +315,10 @@
       </cc:Networks>
       <cc:NetworkFilters />
     </cc:NetworkGroup>
-    <cc:NetworkGroup id="network_group_2">
-      <cc:Name>Network Group 2</cc:Name>
+    <cc:NetworkGroup id="PrivateNetwork">
+      <cc:Name>PrivateNetwork</cc:Name>
       <cc:Networks>
-        <cc:Network ref="network_2">
-          <cc:Infrastructures>
-            <cc:Infrastructure ref="infrastructure_1" />
-          </cc:Infrastructures>
-        </cc:Network>
-      </cc:Networks>
-      <cc:NetworkFilters />
-    </cc:NetworkGroup>
-    <cc:NetworkGroup id="network_group_3">
-      <cc:Name>Network Group 3</cc:Name>
-      <cc:Networks>
-        <cc:Network ref="network_3">
+        <cc:Network ref="Private">
           <cc:Infrastructures>
             <cc:Infrastructure ref="infrastructure_1" />
           </cc:Infrastructures>
@@ -253,8 +328,8 @@
     </cc:NetworkGroup>
   </cc:NetworkGroups>
   <cc:FloatingIPs>
-    <cc:FloatingIP id="1">
-      <cc:Name>1</cc:Name>
+    <cc:FloatingIP id="web_fip">
+      <cc:Name>web_fip</cc:Name>
     </cc:FloatingIP>
     <cc:FloatingIP id="eip_monitor">
       <cc:Name>eip_monitor</cc:Name>
