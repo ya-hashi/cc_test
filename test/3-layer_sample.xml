@@ -221,7 +221,7 @@
     <cc:MachineFilter id="tcp_out_all">
       <cc:Protocol>tcp</cc:Protocol>
       <cc:Port>all</cc:Port>
-      <cc:Direction>ingress</cc:Direction>
+      <cc:Direction>egress</cc:Direction>
       <cc:Source>all</cc:Source>
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:MachineFilter>
@@ -235,7 +235,7 @@
     <cc:MachineFilter id="udp_out_all">
       <cc:Protocol>tcp</cc:Protocol>
       <cc:Port>all</cc:Port>
-      <cc:Direction>ingress</cc:Direction>
+      <cc:Direction>egress</cc:Direction>
       <cc:Source>all</cc:Source>
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:MachineFilter>
