@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cc:System xmlns:cc="http://cloudconductor.org/namespaces/cc">
+<cc:Name>サンプルテンプレート</cc:Name>
+<cc:Description>WEB/AP/DB 3層モデル + DMZ + ルーター</cc:Description>
+<cc:Author>TIS Inc.</cc:Author>
+<cc:Date>2013-12-27</cc:Date>
+<cc:License>???</cc:License>
+
+<!-- テンプレート内で利用するクラウドの定義 -->
+<cc:Infrastructures>
+<cc:Infrastructure id="cloud1">
+<cc:Name>private cloud A</cc:Name>
+</cc:Infrastructure>
+</cc:Infrastructures>
+
+<!-- マシン定義 -->
+<cc:Machines>
+<cc:Machine id="web-server">
+<cc:Name>Web Server</cc:Name>
+<cc:SpecType>small</cc:SpecType>
+<cc:OSType>CentOS</cc:OSType>
+<cc:OSVersion>6.4</cc:OSVersion>
+<cc:NetworkInterfaces>
+<cc:NetworkInterface ref="dmz_g1" />
+</cc:NetworkInterfaces>
+<cc:MachineFilters>
+<cc:MachineFilter ref="sec_in_80" />
+<cc:MachineFilter ref="sec_in_all_deny" />
+<cc:MachineFilter ref="sec_out_all_allow" />
+</cc:MachineFilters>
+</cc:Machine>
+
+<cc:Machine id="ap-server">
+<cc:Name>AP Server</cc:Name>
+<cc:SpecType>medium</cc:SpecType>
+<cc:OSType>CentOS</cc:OSType>
+<cc:OSVersion>6.4</cc:OSVersion>
+<cc:NetworkInterfaces>
+<cc:NetworkInterface ref="private_net_g1" />
+</cc:NetworkInterfaces>
+<cc:MachineFilters>
+<cc:MachineFilter ref="sec_in_8009" />
+<cc:MachineFilter ref="sec_in_all_deny" />
+<cc:MachineFilter ref="sec_out_all_allow" />
+</cc:MachineFilters>
+</cc:Machine>
+
+<cc:Machine id="db-server">
+<cc:Name>Large Server</cc:Name>
+<cc:SpecType>large</cc:SpecType>
+<cc:OSType>CentOS</cc:OSType>
+<cc:OSVersion>6.4</cc:OSVersion>
+<cc:NetworkInterfaces>
+<cc:NetworkInterface ref="private_net_g1" />
+</cc:NetworkInterfaces>
+<cc:Volumes>
+<cc:Volume ref="test_vol1">
+<cc:MountPoint>/data</cc:MountPoint>
+</cc:Volume>
+</cc:Volumes>
+<cc:MachineFilters>
+<cc:MachineFilter ref="sec_in_5432" />
+<cc:MachineFilter ref="sec_in_all_deny" />
+<cc:MachineFilter ref="sec_out_all_allow" />
+</cc:MachineFilters>
+</cc:Machine>
+
+<cc:Machine id="small-server">
+<cc:Name>Small Server</cc:Name>
+<cc:SpecType>small</cc:SpecType>
+<cc:OSType>CentOS</cc:OSType>
+<cc:OSVersion>6.4</cc:OSVersion>
+<cc:NetworkInterfaces>
+<cc:NetworkInterface ref="private_net_g1" />
+</cc:NetworkInterfaces>
+<cc:MachineFilters>
+<cc:MachineFilter ref="sec_in_80" />
+<cc:MachineFilter ref="sec_in_all_deny" />
+<cc:MachineFilter ref="sec_out_all_allow" />
+</cc:MachineFilters>
+</cc:Machine>
+</cc:Machines>
+
+<!-- マシングループ定義 -->
+<cc:MachineGroups>
+<cc:MachineGroup id="web-server-g" ref="web-server">
+<cc:Name>WEB Server Group</cc:Name>
+<cc:Infrastructures>
+<cc:Infrastructure ref="cloud1" />
+</cc:Infrastructures>
+<cc:Roles>
+<cc:Role ref="web_role">
+<cc:Import type="chef_attribute">test1.rb</cc:Import>
+<cc:UserInputKeys>
+<cc:UserInputKey>apache.modproxy.server</cc:UserInputKey>
+</cc:UserInputKeys>
+</cc:Role>
+</cc:Roles>
+<cc:FloatingIP ref="eip1" />
+<cc:NodeType>
+<cc:Single />
+</cc:NodeType>
+<cc:Monitorings>
+<cc:Monitoring ref="LinuxOS_Minimum" />
+<cc:Monitoring ref="Web_Small" />
+</cc:Monitorings>
+</cc:MachineGroup>
+
+<cc:MachineGroup id="ap-server-g" ref="ap-server">
+<cc:Name>AP Server Group</cc:Name>
+<cc:Infrastructures>
+<cc:Infrastructure ref="cloud1" />
+</cc:Infrastructures>
+<cc:Roles>
+<cc:Role ref="ap_role">
+<cc:Import type="chef_attribute">test2.rb</cc:Import>
+</cc:Role>
+</cc:Roles>
+<cc:NodeType>
+<cc:Single />
+</cc:NodeType>
+<cc:Monitorings>
+<cc:Monitoring ref="LinuxOS_Minimum" />
+<cc:Monitoring ref="AP_Small" />
+</cc:Monitorings>
+</cc:MachineGroup>
+
+<cc:MachineGroup id="db-server-g" ref="db-server">
+<cc:Name>DB Server Group</cc:Name>
+<cc:Infrastructures>
+<cc:Infrastructure ref="cloud1" />
+</cc:Infrastructures>
+<cc:Roles>
+<cc:Role ref="db_role">
+<cc:Import type="chef_attribute">test3.rb</cc:Import>
+<cc:UserInputKeys>
+<cc:UserInputKey>mysql.turning.memxxx</cc:UserInputKey>
+</cc:UserInputKeys>
+</cc:Role>
+</cc:Roles>
+<cc:NodeType>
+<cc:Single />
+</cc:NodeType>
+<cc:Monitorings>
+<cc:Monitoring ref="LinuxOS_Minimum" />
+<cc:Monitoring ref="DB_Small" />
+</cc:Monitorings>
+</cc:MachineGroup>
+
+<cc:MachineGroup id="zabbix-server-g" ref="small-server">
+<cc:Name>Zabbix Server</cc:Name>
+<cc:Infrastructures>
+<cc:Infrastructure ref="cloud1" />
+</cc:Infrastructures>
+<cc:Roles>
+<cc:Role ref="zabbix_role" />
+</cc:Roles>
+<cc:FloatingIP ref="eip2" />
+<cc:NodeType>
+<cc:Single />
+</cc:NodeType>
+</cc:MachineGroup>
+
+<cc:MachineGroup id="dns-server-g" ref="small-server">
+<cc:Name>DNS Server</cc:Name>
+<cc:Infrastructures>
+<cc:Infrastructure ref="cloud1" />
+</cc:Infrastructures>
+<cc:Roles>
+<cc:Role ref="dns_ntp_role">
+<cc:Import type="chef_attribute">test5.rb</cc:Import>
+<cc:UserInputKeys>
+<cc:UserInputKey>dns.domain</cc:UserInputKey>
+<cc:UserInputKey>ntp.server1</cc:UserInputKey>
+<cc:UserInputKey>ntp.server2</cc:UserInputKey>
+<cc:UserInputKey>ntp.server3</cc:UserInputKey>
+</cc:UserInputKeys>
+</cc:Role>
+</cc:Roles>
+<cc:NodeType>
+<cc:Single />
+</cc:NodeType>
+</cc:MachineGroup>
+</cc:MachineGroups>
+
+<!-- Middleware定義 -->
+<cc:Middlewares>
+<cc:Middleware type="chef" id="apache_cookbook">
+<cc:Name>Apache 2.2</cc:Name>
+<cc:Repository>http://example.com/apache.git</cc:Repository>
+<cc:CookbookName>apache</cc:CookbookName>
+</cc:Middleware>
+
+<cc:Middleware type="chef" id="tomcat_cookbook">
+<cc:Name>Tomcat 6.0</cc:Name>
+<cc:Repository>http://example.com/tomcat.git</cc:Repository>
+</cc:Middleware>
+
+<cc:Middleware type="chef" id="postgresql_cookbook">
+<cc:Name>PostgreSQL 9.0</cc:Name>
+<cc:Repository>http://example.com/postgresql.git</cc:Repository>
+<cc:CookbookName>postgresql</cc:CookbookName>
+</cc:Middleware>
+
+<cc:Middleware type="chef" id="zabbix_cookbook">
+<cc:Name>Zabbix</cc:Name>
+<cc:Repository>http://example.com/zabbix.git</cc:Repository>
+<cc:CookbookName>zabbix</cc:CookbookName>
+</cc:Middleware>
+
+<cc:Middleware type="chef" id="dns_cookbook">
+<cc:Name>DNS</cc:Name>
+<cc:Repository>http://example.com/dns.git</cc:Repository>
+</cc:Middleware>
+
+<cc:Middleware type="chef" id="ntp_cookbook">
+<cc:Name>NTP</cc:Name>
+<cc:Repository>http://example.com/ntp.git</cc:Repository>
+</cc:Middleware>
+</cc:Middlewares>
+
+<!-- Role定義 -->
+<cc:Roles>
+<cc:Role type="chef" id="web_role">
+<cc:Name>Web Server Role</cc:Name>
+<cc:Middlewares>
+<cc:Middleware ref="apache_cookbook" />
+</cc:Middlewares>
+<cc:Import type="chef_runlist">chef_runlist_apache.rb</cc:Import>
+<cc:Import type="chef_attribute">chef_attr_apache.rb</cc:Import>
+<cc:UserInputKeys>
+<cc:UserInputKey>apache.modproxy.server</cc:UserInputKey>
+</cc:UserInputKeys>
+</cc:Role>
+
+<cc:Role type="chef" id="ap_role">
+<cc:Name>AP Server Role</cc:Name>
+<cc:Middlewares>
+<cc:Middleware ref="tomcat_cookbook" />
+</cc:Middlewares>
+<cc:Import type="chef_runlist">chef_runlist_tomcat.rb</cc:Import>
+<cc:Import type="chef_attribute">chef_attr_tomcat.rb</cc:Import>
+</cc:Role>
+
+<cc:Role type="chef" id="db_role">
+<cc:Name>DB Server Role</cc:Name>
+<cc:Middlewares>
+<cc:Middleware ref="postgresql_cookbook" />
+</cc:Middlewares>
+<cc:Import type="chef_runlist">chef_runlist_postgresql.rb</cc:Import>
+<cc:Import type="chef_attribute">chef_attr_postgresql.rb</cc:Import>
+<cc:UserInputKeys>
+<cc:UserInputKey>mysql.turning.memxxx</cc:UserInputKey>
+</cc:UserInputKeys>
+</cc:Role>
+
+<cc:Role type="chef" id="zabbix_role">
+<cc:Name>Monitoring Server Role</cc:Name>
+<cc:Middlewares>
+<cc:Middleware ref="apache_cookbook" />
+<cc:Middleware ref="zabbix_cookbook" />
+</cc:Middlewares>
+<cc:Import type="chef_runlist">chef_runlist_zabbix.rb</cc:Import>
+<cc:Import type="chef_attribute">chef_attr_zabbix.rb</cc:Import>
+</cc:Role>
+
+<cc:Role type="chef" id="dns_ntp_role">
+<cc:Name>DNS Server Role</cc:Name>
+<cc:Middlewares>
+<cc:Middleware ref="dns_cookbook" />
+<cc:Middleware ref="ntp_cookbook" />
+</cc:Middlewares>
+<cc:Import type="chef_runlist">chef_runlist_dnsntp.rb</cc:Import>
+<cc:Import type="chef_attribute">chef_attr_dnsntp.rb</cc:Import>
+<cc:UserInputKeys>
+<cc:UserInputKey>ntp.server1</cc:UserInputKey>
+<cc:UserInputKey>ntp.server2</cc:UserInputKey>
+<cc:UserInputKey>ntp.server3</cc:UserInputKey>
+</cc:UserInputKeys>
+</cc:Role>
+</cc:Roles>
+
+<!-- ボリューム定義 -->
+<cc:Volumes>
+<cc:Volume id="test_vol1">
+<cc:Size>10</cc:Size>
+<cc:IOPS>high</cc:IOPS>
+</cc:Volume>
+</cc:Volumes>
+
+<!-- マシンフィルタ -->
+<cc:MachineFilters>
+<cc:MachineFilter id="sec_in_80">
+<cc:Protocol>tcp</cc:Protocol>
+<cc:Port>80</cc:Port>
+<cc:Direction>ingress</cc:Direction>
+<cc:Source>all</cc:Source>
+<cc:RuleAction>allow</cc:RuleAction>
+</cc:MachineFilter>
+<cc:MachineFilter id="sec_in_8009">
+<cc:Protocol>tcp</cc:Protocol>
+<cc:Port>8009</cc:Port>
+<cc:Direction>ingress</cc:Direction>
+<cc:Source ref="private_net_g1" />
+<cc:RuleAction>allow</cc:RuleAction>
+</cc:MachineFilter>
+<cc:MachineFilter id="sec_in_5432">
+<cc:Protocol>tcp</cc:Protocol>
+<cc:Port>5432</cc:Port>
+<cc:Direction>ingress</cc:Direction>
+<cc:Source ref="private_net_g1" />
+<cc:RuleAction>allow</cc:RuleAction>
+</cc:MachineFilter>
+<cc:MachineFilter id="sec_in_all_deny">
+<cc:Protocol>tcp</cc:Protocol>
+<cc:Port>all</cc:Port>
+<cc:Direction>ingress</cc:Direction>
+<cc:Source>all</cc:Source>
+<cc:RuleAction>deny</cc:RuleAction>
+</cc:MachineFilter>
+<cc:MachineFilter id="sec_out_all_allow">
+<cc:Protocol>tcp</cc:Protocol>
+<cc:Port>all</cc:Port>
+<cc:Direction>egress</cc:Direction>
+<cc:Destination>all</cc:Destination>
+<cc:RuleAction>allow</cc:RuleAction>
+</cc:MachineFilter>
+</cc:MachineFilters>
+
+<!-- ネットワーク定義 -->
+<cc:Networks>
+<cc:Network id="public_net1">
+<cc:Name>public network 1</cc:Name>
+</cc:Network>
+<cc:Network id="dmz1">
+<cc:Name>dmz 1</cc:Name>
+</cc:Network>
+<cc:Network id="private_net1">
+<cc:Name>private network 1</cc:Name>
+</cc:Network>
+</cc:Networks>
+
+<!-- ネットワークグループ定義 -->
+<cc:NetworkGroups>
+<cc:NetworkGroup id="public_net_g1">
+<cc:Name>public network group 1</cc:Name>
+<cc:Networks>
+<cc:Network ref="public_net1">
+<cc:Infrastructures>
+<cc:Infrastructure ref="cloud1" />
+</cc:Infrastructures>
+</cc:Network>
+</cc:Networks>
+<cc:NetworkFilters>
+<cc:NetworkFilter ref="acl_in_80_to_pub" />
+<cc:NetworkFilter ref="acl_in_all_deny" />
+<cc:NetworkFilter ref="acl_out_all_allow" />
+</cc:NetworkFilters>
+<cc:Routes>
+<cc:Route ref="route_all" />
+<cc:Route ref="route_dmz_g1" />
+<cc:Route ref="route_private_net_g1" />
+</cc:Routes>
+<cc:NATs>
+<cc:NAT ref="nat_web" />
+</cc:NATs>
+</cc:NetworkGroup>
+
+<cc:NetworkGroup id="dmz_g1">
+<cc:Name>dmz group 1</cc:Name>
+<cc:Networks>
+<cc:Network ref="dmz1">
+<cc:Infrastructures>
+<cc:Infrastructure ref="cloud1" />
+</cc:Infrastructures>
+</cc:Network>
+</cc:Networks>
+<cc:NetworkFilters>
+<cc:NetworkFilter ref="acl_in_80_pub_to_dmz" />
+<cc:NetworkFilter ref="acl_in_all_deny" />
+<cc:NetworkFilter ref="acl_out_all_allow" />
+</cc:NetworkFilters>
+<cc:Routes>
+<cc:Route ref="route_all" />
+<cc:Route ref="route_private_net_g1" />
+</cc:Routes>
+</cc:NetworkGroup>
+
+<cc:NetworkGroup id="private_net_g1">
+<cc:Name>private network group 1</cc:Name>
+<cc:Networks>
+<cc:Network ref="private_net1">
+<cc:Infrastructures>
+<cc:Infrastructure ref="cloud1" />
+</cc:Infrastructures>
+</cc:Network>
+</cc:Networks>
+<cc:NetworkFilters>
+<cc:NetworkFilter ref="acl_in_80_dmz_to_pri" />
+<cc:NetworkFilter ref="acl_in_all_deny" />
+<cc:NetworkFilter ref="acl_out_all_allow" />
+</cc:NetworkFilters>
+<cc:Routes>
+<cc:Route ref="route_all" />
+<cc:Route ref="route_dmz_g1" />
+</cc:Routes>
+</cc:NetworkGroup>
+</cc:NetworkGroups>
+
+<!-- ルーティング定義 -->
+<cc:Routes>
+<cc:Route id="route_all">
+<cc:Destination>all</cc:Destination>
+<cc:Target>{{InternetGateway}}</cc:Target>
+</cc:Route>
+<cc:Route id="route_dmz_g1">
+<cc:Destination ref="dmz_g1" />
+<cc:Target ref="dmz_g1" />
+</cc:Route>
+<cc:Route id="route_private_net_g1">
+<cc:Destination ref="private_net_g1" />
+<cc:Target ref="private_net_g1" />
+</cc:Route>
+</cc:Routes>
+
+<!-- ネットワークフィルタ -->
+<cc:NetworkFilters>
+<cc:NetworkFilter id="acl_in_80_to_pub">
+<cc:Protocol>tcp</cc:Protocol>
+<cc:Port>80</cc:Port>
+<cc:Direction>ingress</cc:Direction>
+<cc:Source>all</cc:Source>
+<cc:RuleAction>allow</cc:RuleAction>
+</cc:NetworkFilter>
+<cc:NetworkFilter id="acl_in_80_pub_to_dmz">
+<cc:Protocol>tcp</cc:Protocol>
+<cc:Port>80</cc:Port>
+<cc:Direction>ingress</cc:Direction>
+<cc:Source ref="public_net_g1" />
+<cc:RuleAction>allow</cc:RuleAction>
+</cc:NetworkFilter>
+<cc:NetworkFilter id="acl_in_80_dmz_to_pri">
+<cc:Protocol>tcp</cc:Protocol>
+<cc:Port>80</cc:Port>
+<cc:Direction>ingress</cc:Direction>
+<cc:Source ref="dmz_g1" />
+<cc:RuleAction>allow</cc:RuleAction>
+</cc:NetworkFilter>
+<cc:NetworkFilter id="acl_in_all_deny">
+<cc:Protocol>tcp</cc:Protocol>
+<cc:Port>all</cc:Port>
+<cc:Direction>ingress</cc:Direction>
+<cc:Source>all</cc:Source>
+<cc:RuleAction>deny</cc:RuleAction>
+</cc:NetworkFilter>
+<cc:NetworkFilter id="acl_out_all_allow">
+<cc:Protocol>tcp</cc:Protocol>
+<cc:Port>all</cc:Port>
+<cc:Direction>egress</cc:Direction>
+<cc:Destination>all</cc:Destination>
+<cc:RuleAction>allow</cc:RuleAction>
+</cc:NetworkFilter>
+</cc:NetworkFilters>
+
+<!-- NAT -->
+<cc:NATs>
+<cc:NAT id="nat_web">
+<cc:Source>{{InternetGateway}}</cc:Source>
+<cc:Destination ref="web-server-g"></cc:Destination>
+</cc:NAT>
+</cc:NATs>
+
+<!-- Floating IP -->
+<cc:FloatingIPs>
+<cc:FloatingIP id="eip1">
+<cc:Name>eip1</cc:Name>
+</cc:FloatingIP>
+<cc:FloatingIP id="eip2">
+<cc:Name>eip2</cc:Name>
+</cc:FloatingIP>
+</cc:FloatingIPs>
+
+<cc:Monitorings>
+<cc:Monitoring id="LinuxOS_Minimum">
+<cc:Name>LinuxOS Minimum Monitoring</cc:Name>
+<cc:Import filetype="zabbix">http://192.168.166.161/cloudconductor/xml-store/blob/master/zbx_os_minimum.xml</cc:Import>
+</cc:Monitoring>
+<cc:Monitoring id="Web_Small">
+<cc:Name>Web Small Monitoring</cc:Name>
+<cc:Import filetype="zabbix">http://192.168.166.161/cloudconductor/xml-store/blob/master/zbx_apache_small.xml</cc:Import>
+</cc:Monitoring>
+<cc:Monitoring id="Web_Medium">
+<cc:Name>Web Medium Monitoring</cc:Name>
+<cc:Import filetype="zabbix">http://192.168.166.161/cloudconductor/xml-store/blob/master/zbx_apache_medium.xml</cc:Import>
+</cc:Monitoring>
+<cc:Monitoring id="Web_Large">
+<cc:Name>Web Large Monitoring</cc:Name>
+<cc:Import filetype="zabbix">http://192.168.166.161/cloudconductor/xml-store/blob/master/zbx_apache_large.xml</cc:Import>
+</cc:Monitoring>
+<cc:Monitoring id="AP_Small">
+<cc:Name>AP Small Monitoring</cc:Name>
+<cc:Import filetype="zabbix">http://192.168.166.161/cloudconductor/xml-store/blob/master/zbx_tomcat_small.xml</cc:Import>
+</cc:Monitoring>
+<cc:Monitoring id="AP_Medium">
+<cc:Name>AP Medium Monitoring</cc:Name>
+<cc:Import filetype="zabbix">http://192.168.166.161/cloudconductor/xml-store/blob/master/zbx_tomcat_medium.xml</cc:Import>
+</cc:Monitoring>
+<cc:Monitoring id="AP_Large">
+<cc:Name>AP Large Monitoring</cc:Name>
+<cc:Import filetype="zabbix">http://192.168.166.161/cloudconductor/xml-store/blob/master/zbx_tomcat_large.xml</cc:Import>
+</cc:Monitoring>
+<cc:Monitoring id="DB_Small">
+<cc:Name>DB Small Monitoring</cc:Name>
+<cc:Import filetype="zabbix">http://192.168.166.161/cloudconductor/xml-store/blob/master/zbx_postgresql_small.xml</cc:Import>
+</cc:Monitoring>
+<cc:Monitoring id="DB_Medium">
+<cc:Name>DB Medium Monitoring</cc:Name>
+<cc:Import filetype="zabbix">http://192.168.166.161/cloudconductor/xml-store/blob/master/zbx_postgresql_medium.xml</cc:Import>
+</cc:Monitoring>
+<cc:Monitoring id="DB_Large">
+<cc:Name>DB Large Monitoring</cc:Name>
+<cc:Import filetype="zabbix">http://192.168.166.161/cloudconductor/xml-store/blob/master/zbx_postgresql_large.xml</cc:Import>
+</cc:Monitoring>
+</cc:Monitorings>
+</cc:System>
